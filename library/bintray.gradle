@@ -1,0 +1,95 @@
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'com.github.dcendents.android-maven'
+
+def siteUrl = 'https://github.com/XBaron/DoverAdapter'
+def gitUrl = 'https://github.com/XBaron/DoverAdapter.git'
+def gitIssueUrl = 'https://github.com/XBaron/DoverAdapter/issues'
+def groupName = "com.github.xbaron"
+def versionName = "1.0.0"
+def archivesName = "dover-adapter"
+
+group = groupName
+version = versionName
+project.archivesBaseName = archivesName
+
+task sourcesJar(type: Jar) {
+    classifier 'sources'
+    from android.sourceSets.main.java.srcDirs
+}
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task docJar(type: Jar, dependsOn: javadoc) {
+    classifier 'doc'
+    from javadoc.destinationDir
+}
+
+javadoc {
+    options{
+        encoding "UTF-8"
+        charSet 'UTF-8'
+        author true
+        version true
+        links "https://androiddoc.qiniudn.com/reference/"
+    }
+}
+
+artifacts {
+    archives sourcesJar
+    archives docJar
+}
+
+install {
+    repositories.mavenInstaller {
+        pom.project {
+            name archivesName
+            url siteUrl
+            packaging 'aar'
+            groupId groupName
+            artifactId archivesBaseName
+            version versionName
+            licenses {
+                license {
+                    name 'The Apache Software License, Version 2.0'
+                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    distribution 'repo'
+                }
+            }
+            developers {
+                developer {
+                    id 'xbaron'
+                    name 'xbaron'
+                    email 'mebaron@163.com'
+                }
+            }
+            scm {
+                connection gitUrl
+                developerConnection gitUrl
+                url siteUrl
+            }
+        }
+    }
+}
+
+bintray {
+    user = bintrayUsername
+    key = bintrayKey
+    configurations = ['archives']
+    override = false
+    pkg {
+        repo = 'maven'
+        name = archivesName
+        userOrg = bintrayUsername
+        desc = 'A lightweight,powful,extensible,easy to use recyclerview adapter'
+        licenses = ['Apache-2.0']
+        vcsUrl = gitUrl
+        websiteUrl = siteUrl
+        issueTrackerUrl = gitIssueUrl
+        publicDownloadNumbers = true
+        dryRun = false
+        publish = true
+    }
+}
