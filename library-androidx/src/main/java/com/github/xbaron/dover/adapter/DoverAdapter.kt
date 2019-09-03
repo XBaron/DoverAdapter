@@ -306,7 +306,7 @@ open class DoverAdapter<T : Any> : RecyclerView.Adapter<DoverAdapter<T>.DoverVie
     }
 
     open fun removeAllHeaders() = apply {
-        if (!mHeaderViews.isEmpty()) {
+        if (mHeaderViews.isNotEmpty()) {
             val headerSize = mHeaderViews.size
             mHeaderViews.clear()
             notifyItemRangeRemoved(0, headerSize)
@@ -314,7 +314,7 @@ open class DoverAdapter<T : Any> : RecyclerView.Adapter<DoverAdapter<T>.DoverVie
     }
 
     open fun removeAllFooters() = apply {
-        if (!mFooterViews.isEmpty()) {
+        if (mFooterViews.isNotEmpty()) {
             val footerSize = mFooterViews.size
             mFooterViews.clear()
             notifyItemRangeRemoved(footerStartPosition(), footerSize)
@@ -328,10 +328,11 @@ open class DoverAdapter<T : Any> : RecyclerView.Adapter<DoverAdapter<T>.DoverVie
     open fun addList(data: List<T>, index: Int? = itemCount) = submitList(currentList().apply { addAll(index!!, data) })
     open fun remove(data: T) = submitList(currentList().apply { remove(data) })
     open fun remove(position: Int) = submitList(currentList().apply { removeAt(position) })
+    open fun removeAll() = submitList(null)
     open fun update(data: T) = submitList(currentList().apply { set(indexOf(data), data) })
     open fun update(position: Int) = submitList(currentList().apply { set(position, get(position)) })
     open fun currentList(): MutableList<T> = ArrayList(mDiffer.currentList)
-    open fun submitList(data: List<T>) = mDiffer.submitList(data)
+    open fun submitList(data: List<T>?) = mDiffer.submitList(data)
 
     /**
      * base ViewHolder to simplify Android Extensions-style view access and event handling
@@ -360,6 +361,6 @@ open class DoverAdapter<T : Any> : RecyclerView.Adapter<DoverAdapter<T>.DoverVie
             mCustomListener.invoke(this, itemView)
         }
 
-        private fun dataPosition() = layoutPosition - dataStartPosition.invoke()
+        fun dataPosition() = layoutPosition - dataStartPosition.invoke()
     }
 }

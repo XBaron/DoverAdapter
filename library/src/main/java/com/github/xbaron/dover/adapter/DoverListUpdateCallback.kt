@@ -12,7 +12,7 @@ class DoverListUpdateCallback<T : Any>(private val mAdapter: DoverAdapter<T>) : 
     }
 
     override fun onRemoved(position: Int, count: Int) {
-        mAdapter.notifyItemRangeInserted(mAdapter.mHeaderViews.size + position, count)
+        mAdapter.notifyItemRangeRemoved(mAdapter.mHeaderViews.size + position, count)
     }
 
     override fun onMoved(fromPosition: Int, toPosition: Int) {

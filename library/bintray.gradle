@@ -5,7 +5,7 @@ def siteUrl = 'https://github.com/XBaron/DoverAdapter'
 def gitUrl = 'https://github.com/XBaron/DoverAdapter.git'
 def gitIssueUrl = 'https://github.com/XBaron/DoverAdapter/issues'
 def groupName = "com.github.xbaron"
-def versionName = "1.0.0"
+def versionName = "1.0.2"
 def archivesName = "dover-adapter"
 
 group = groupName
@@ -80,7 +80,7 @@ bintray {
     configurations = ['archives']
     override = false
     pkg {
-        repo = 'maven'
+        repo = 'dover'
         name = archivesName
         userOrg = bintrayUsername
         desc = 'A lightweight,powful,extensible,easy to use recyclerview adapter'
